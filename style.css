@@ -4,9 +4,9 @@
    =========================================================== */
 
 :root {
-  --navy-900: #0b1c39;
-  --navy-800: #132c56;
-  --navy-700: #1c3a6e;
+  --navy-900: #0a0a0a;
+  --navy-800: #1a1a1a;
+  --navy-700: #262626;
   --gold-500: #e2231a;
   --gold-600: #b91913;
   --ink: #1a2233;
@@ -30,11 +30,11 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #0e1526;
-    --bg-soft: #121a2e;
-    --ink: #eef1f7;
-    --muted: #a9b2c4;
-    --line: #26314a;
+    --bg: #0a0a0a;
+    --bg-soft: #141414;
+    --ink: #f2f2f2;
+    --muted: #a8a8a8;
+    --line: #2a2a2a;
   }
 }
 
@@ -127,12 +127,11 @@ a { color: inherit; }
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(255,255,255,0.9);
+  /* Fixed light background (not theme-dependent) so the logo's black
+     ink stays legible regardless of the page's light/dark mode. */
+  background: rgba(255,255,255,0.94);
   backdrop-filter: saturate(180%) blur(8px);
-  border-bottom: 1px solid var(--line);
-}
-@media (prefers-color-scheme: dark) {
-  .site-header { background: rgba(14,21,38,0.85); }
+  border-bottom: 1px solid #e4e8f0;
 }
 .header-inner {
   display: flex;
@@ -155,7 +154,7 @@ a { color: inherit; }
   font-weight: 600;
   font-size: 0.95rem;
 }
-.main-nav a { text-decoration: none; opacity: 0.8; }
+.main-nav a { color: #1a1a1a; text-decoration: none; opacity: 0.8; }
 .main-nav a:hover { opacity: 1; }
 @media (min-width: 880px) {
   .main-nav { display: flex; }
@@ -275,7 +274,7 @@ a { color: inherit; }
   box-shadow: var(--shadow-lg);
 }
 @media (prefers-color-scheme: dark) {
-  .lead-form { background: #161f36; }
+  .lead-form { background: #171717; }
 }
 .lead-form h2 {
   margin: 0 0 6px;
