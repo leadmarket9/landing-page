@@ -288,11 +288,27 @@
   }
 
   /* ============================================================
-   * Scroll-reveal animation (progressive enhancement only)
+   * Scroll-reveal animation (progressive enhancement only).
+   * Cards within the same grid get a small staggered delay so
+   * groups cascade in rather than popping in all at once.
    * ============================================================ */
   function setupScrollReveal() {
-    const targets = $$(".benefit-card, .testimonial-card, .stat, .section-heading");
-    targets.forEach((el) => el.setAttribute("data-animate", ""));
+    const groups = [
+      $$(".benefit-grid > .benefit-card"),
+      $$(".testimonial-grid > .testimonial-card"),
+      $$(".stats-row > .stat"),
+    ];
+    groups.forEach((group) => {
+      group.forEach((el, i) => {
+        el.setAttribute("data-animate", "");
+        el.style.setProperty("--reveal-delay", `${Math.min(i * 0.08, 0.4)}s`);
+      });
+    });
+
+    const standalone = $$(".section-heading");
+    standalone.forEach((el) => el.setAttribute("data-animate", ""));
+
+    const targets = [...groups.flat(), ...standalone];
 
     if (!("IntersectionObserver" in window)) {
       targets.forEach((el) => el.classList.add("in-view"));
@@ -314,6 +330,60 @@
   }
 
   /* ============================================================
+   * Stat counters: animate each .stat-num from 0 up to its target
+   * value once it scrolls into view. Parses mixed formats like
+   * "+40", "+1.5M", "4.8/5", "<24h" by extracting the numeric core
+   * and keeping the surrounding prefix/suffix text intact.
+   * ============================================================ */
+  function setupStatCounters() {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const statEls = $$(".stat-num");
+
+    function animateCount(el) {
+      const raw = el.textContent.trim();
+      const match = raw.match(/^(\D*)(\d+(?:\.\d+)?)(.*)$/);
+      if (!match) return;
+      const [, prefix, numStr, suffix] = match;
+      const target = parseFloat(numStr);
+      const decimals = (numStr.split(".")[1] || "").length;
+
+      if (prefersReducedMotion) {
+        el.textContent = `${prefix}${numStr}${suffix}`;
+        return;
+      }
+
+      const duration = 1400;
+      const start = performance.now();
+
+      function tick(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = `${prefix}${(target * eased).toFixed(decimals)}${suffix}`;
+        if (progress < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    if (!("IntersectionObserver" in window)) {
+      statEls.forEach(animateCount);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            animateCount(entry.target);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+    statEls.forEach((el) => observer.observe(el));
+  }
+
+  /* ============================================================
    * Init
    * ============================================================ */
   document.addEventListener("DOMContentLoaded", () => {
@@ -327,6 +397,7 @@
     wireForm(bottomForm, document.getElementById("form-status-bottom"));
 
     setupScrollReveal();
+    setupStatCounters();
 
     const yearEl = document.getElementById("year");
     if (yearEl) yearEl.textContent = new Date().getFullYear();
