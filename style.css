@@ -1,5 +1,5 @@
 /* ===========================================================
-   Capital Bridge Advisors — Landing Page Styles
+   C-TRADE — Landing Page Styles
    Mobile-first, system fonts only (zero web-font network cost)
    =========================================================== */
 
@@ -7,8 +7,8 @@
   --navy-900: #0b1c39;
   --navy-800: #132c56;
   --navy-700: #1c3a6e;
-  --gold-500: #c9a24b;
-  --gold-600: #b48c34;
+  --gold-500: #e2231a;
+  --gold-600: #b91913;
   --ink: #1a2233;
   --muted: #5b6577;
   --line: #e4e8f0;
@@ -145,14 +145,10 @@ a { color: inherit; }
 .logo {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-weight: 800;
-  font-size: 1.05rem;
   text-decoration: none;
-  color: var(--ink);
   white-space: nowrap;
 }
-.logo em { color: var(--gold-600); font-style: normal; }
+.logo-img { height: 36px; width: auto; }
 .main-nav {
   display: none;
   gap: 24px;
@@ -234,7 +230,7 @@ a { color: inherit; }
   inset-inline-start: 0; top: 3px;
   width: 18px; height: 18px;
   border-radius: 50%;
-  background: rgba(201,162,75,0.18);
+  background: rgba(226,35,26,0.18);
   border: 1px solid var(--gold-500);
 }
 .hero-points li::after {
@@ -341,7 +337,7 @@ textarea {
 }
 input:focus, select:focus, textarea:focus {
   border-color: var(--gold-500);
-  box-shadow: 0 0 0 3px rgba(201,162,75,0.2);
+  box-shadow: 0 0 0 3px rgba(226,35,26,0.2);
   outline: none;
 }
 input[aria-invalid="true"], select[aria-invalid="true"], textarea[aria-invalid="true"] {
@@ -461,7 +457,7 @@ textarea { resize: vertical; min-height: 80px; }
   justify-content: center;
   width: 48px; height: 48px;
   border-radius: 12px;
-  background: rgba(201,162,75,0.15);
+  background: rgba(226,35,26,0.15);
   color: var(--gold-600);
   margin-bottom: 16px;
 }

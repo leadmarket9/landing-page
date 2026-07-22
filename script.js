@@ -27,6 +27,19 @@
   ];
 
   /* ============================================================
+   * US States + DC (for the required "state" field)
+   * ============================================================ */
+  const US_STATES = [
+    "Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware",
+    "District of Columbia","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa",
+    "Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota",
+    "Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey",
+    "New Mexico","New York","North Carolina","North Dakota","Ohio","Oklahoma","Oregon",
+    "Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah",
+    "Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"
+  ];
+
+  /* ============================================================
    * Utilities
    * ============================================================ */
   const $ = (sel, ctx = document) => ctx.querySelector(sel);
@@ -38,7 +51,7 @@
 
   function phoneIsValid(value) {
     const digitsOnly = value.replace(/[\s().-]/g, "");
-    return /^\+?[1-9]\d{7,14}$/.test(digitsOnly);
+    return /^\+1\d{10}$/.test(digitsOnly);
   }
 
   function setFieldError(input, message) {
@@ -82,6 +95,17 @@
       });
     }
 
+    // Populate US state select
+    const stateSelect = formEl.querySelector('select[name="state"]');
+    if (stateSelect) {
+      US_STATES.forEach((s) => {
+        const opt = document.createElement("option");
+        opt.value = s;
+        opt.textContent = s;
+        stateSelect.appendChild(opt);
+      });
+    }
+
     return formEl;
   }
 
@@ -104,7 +128,7 @@
 
     const phone = formEl.querySelector('[name="phone"]');
     if (!phone.value.trim()) flag(phone, "رقم الهاتف مطلوب.");
-    else if (!phoneIsValid(phone.value)) flag(phone, "يرجى إدخال رقم هاتف صحيح، مثال: ‎+966 5X XXX XXXX");
+    else if (!phoneIsValid(phone.value)) flag(phone, "يرجى إدخال رقم هاتف أمريكي صحيح يبدأ بـ +1، مثال: ‎+1 XXX XXX XXXX");
     else flag(phone, "");
 
     const email = formEl.querySelector('[name="email"]');
@@ -115,6 +139,10 @@
     const country = formEl.querySelector('[name="country"]');
     if (!country.value.trim()) flag(country, "الدولة مطلوبة.");
     else flag(country, "");
+
+    const state = formEl.querySelector('[name="state"]');
+    if (!state.value.trim()) flag(state, "الولاية مطلوبة.");
+    else flag(state, "");
 
     const halalRadios = formEl.querySelectorAll('input[name^="halalAccount"]');
     const halalChecked = Array.from(halalRadios).some((r) => r.checked);
@@ -155,6 +183,7 @@
       email: data.get("email") || "",
       country: data.get("country") || "",
       city: data.get("city") || "",
+      state: data.get("state") || "",
       halalAccount: halalRadio ? halalRadio.value : "",
       budget: data.get("budget") || "",
       consentPrivacy: !!formEl.querySelector('[name="consentPrivacy"]')?.checked,
