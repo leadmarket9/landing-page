@@ -7,7 +7,7 @@
   const CONFIG = {
     // Generic webhook endpoint (Zapier "Catch Hook", Make.com, n8n, your own API, etc.)
     // Leave as-is to run the form in demo mode (no network call, simulated success).
-    WEBHOOK_URL: "https://script.google.com/macros/s/AKfycbzjRNTp01HLUSJ8LQgZOm1gbKXxpdJ8oEXj5JzFuzuZheNajIrCbPQsgIucLwxiH0jQHQ/exec",
+    WEBHOOK_URL: "https://script.google.com/macros/s/AKfycbyJvQZgNPDcYs_FaAqn4qEHhi1POVtjvZ08YvQxxe0e_3-a7P27sFr2r1jfZ1CfK-D9Ew/exec",
 
     // Optional direct integrations — leave blank to skip.
     HUBSPOT_PORTAL_ID: "",
